@@ -124,7 +124,7 @@ export default function HomePage() {
           </div>
           <div className="relative aspect-[4/3] w-full max-w-sm overflow-hidden rounded-card bg-bg md:w-80">
             <Image
-              src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800"
+              src="https://placehold.co/960x720/png?text=%EA%B0%90%EC%A0%95%EC%82%AC"
               alt="감정사"
               fill
               sizes="320px"
