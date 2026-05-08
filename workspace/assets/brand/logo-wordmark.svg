@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 64" width="220" height="64">
+  <rect x="0" y="0" width="64" height="64" rx="14" fill="#0A0A0A"/>
+  <path d="M32 12l5.7 12.2 13.3 1.6-9.9 9.1 2.6 13.1L32 41.5l-11.7 6.5 2.6-13.1-9.9-9.1 13.3-1.6L32 12z"
+        fill="#FFFFFF"/>
+  <text x="80" y="42" font-family="Pretendard, ui-sans-serif, system-ui, sans-serif"
+        font-size="28" font-weight="700" fill="#0A0A0A" letter-spacing="-0.5">ÄE</text>
+  <text x="80" y="58" font-family="Inter, ui-sans-serif, sans-serif"
+        font-size="10" font-weight="500" fill="#6B7280" letter-spacing="2">BYEOLDDANG</text>
+</svg>
