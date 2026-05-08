@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { CategoryTabs } from "@/components/property/CategoryTabs";
 import { PropertyCard } from "@/components/property/PropertyCard";
-import { SearchBar } from "@/components/property/SearchBar";
+import { type PropertyFilters, SearchBar } from "@/components/property/SearchBar";
 import { Button } from "@/components/ui/Button";
 import { fetchProperties } from "@/features/properties/api";
 import { extractError } from "@/lib/api";
@@ -15,6 +15,15 @@ export default function HomePage() {
   const [pendingQuery, setPendingQuery] = useState("");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<string>("all");
+  const [filters, setFilters] = useState<PropertyFilters>({
+    priceMin: null,
+    priceMax: null,
+    areaMin: null,
+    areaMax: null,
+    roomsMin: null,
+    bathroomsMin: null,
+    premiumOnly: false,
+  });
   const [items, setItems] = useState<PropertyListItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -26,9 +35,20 @@ export default function HomePage() {
     fetchProperties({
       q: query || undefined,
       category: category !== "all" ? category : undefined,
+      price_min: filters.priceMin ?? undefined,
+      price_max: filters.priceMax ?? undefined,
     })
       .then((res) => {
-        if (!cancelled) setItems(res.data);
+        if (cancelled) return;
+        const filtered = res.data.filter((p) => {
+          if (filters.areaMin !== null && p.area_m2 < filters.areaMin) return false;
+          if (filters.areaMax !== null && p.area_m2 > filters.areaMax) return false;
+          if (filters.roomsMin !== null && (p.rooms ?? 0) < filters.roomsMin) return false;
+          if (filters.bathroomsMin !== null && (p.bathrooms ?? 0) < filters.bathroomsMin) return false;
+          if (filters.premiumOnly && !p.is_premium) return false;
+          return true;
+        });
+        setItems(filtered);
       })
       .catch((e) => {
         if (!cancelled) setError(extractError(e).message);
@@ -39,7 +59,7 @@ export default function HomePage() {
     return () => {
       cancelled = true;
     };
-  }, [query, category]);
+  }, [query, category, filters]);
 
   return (
     <div className="mx-auto max-w-page px-6 py-10">
@@ -59,6 +79,8 @@ export default function HomePage() {
           value={pendingQuery}
           onChange={setPendingQuery}
           onSubmit={() => setQuery(pendingQuery)}
+          filters={filters}
+          onApplyFilters={setFilters}
         />
         <CategoryTabs value={category} onChange={setCategory} />
       </section>
