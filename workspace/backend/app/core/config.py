@@ -1,7 +1,31 @@
 from functools import lru_cache
 
-from pydantic import Field
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+def _normalize_async_db_url(url: str) -> str:
+    """Railway/Heroku style postgres:// URLs must use asyncpg for create_async_engine."""
+    if "://" not in url:
+        return url
+    scheme, rest = url.split("://", 1)
+    if scheme in ("postgres", "postgresql"):
+        return f"postgresql+asyncpg://{rest}"
+    if scheme == "postgresql+psycopg2":
+        return f"postgresql+asyncpg://{rest}"
+    return url
+
+
+def _normalize_sync_db_url(url: str) -> str:
+    """Alembic and sync helpers use psycopg2."""
+    if "://" not in url:
+        return url
+    scheme, rest = url.split("://", 1)
+    if scheme in ("postgres", "postgresql"):
+        return f"postgresql+psycopg2://{rest}"
+    if scheme == "postgresql+asyncpg":
+        return f"postgresql+psycopg2://{rest}"
+    return url
 
 
 class Settings(BaseSettings):
@@ -29,6 +53,20 @@ class Settings(BaseSettings):
     toss_client_key: str = "test_ck_change_me"
 
     cors_origins: str = "http://localhost:3000"
+
+    @field_validator("database_url", mode="before")
+    @classmethod
+    def normalize_database_url(cls, v: object) -> object:  # noqa: ANN401 — pydantic coerces
+        if isinstance(v, str):
+            return _normalize_async_db_url(v)
+        return v
+
+    @field_validator("database_url_sync", mode="before")
+    @classmethod
+    def normalize_database_url_sync(cls, v: object) -> object:
+        if isinstance(v, str):
+            return _normalize_sync_db_url(v)
+        return v
 
     @property
     def cors_origin_list(self) -> list[str]:
