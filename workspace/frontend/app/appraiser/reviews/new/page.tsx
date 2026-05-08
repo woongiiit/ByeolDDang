@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { fetchProperties } from "@/features/properties/api";
@@ -19,6 +19,22 @@ const OUTLOOK = [
 ];
 
 export default function NewReviewPage() {
+  return (
+    <Suspense fallback={<NewReviewFallback />}>
+      <NewReviewPageInner />
+    </Suspense>
+  );
+}
+
+function NewReviewFallback() {
+  return (
+    <div className="mx-auto max-w-3xl px-6 py-10 text-sm text-text-muted">
+      불러오는 중…
+    </div>
+  );
+}
+
+function NewReviewPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialPropertyId = searchParams.get("propertyId");

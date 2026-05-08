@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { signup } from "@/features/auth/api";
@@ -19,6 +19,22 @@ const ROLES = [
 ];
 
 export default function SignupPage() {
+  return (
+    <Suspense fallback={<SignupFallback />}>
+      <SignupPageInner />
+    </Suspense>
+  );
+}
+
+function SignupFallback() {
+  return (
+    <div className="mx-auto flex min-h-[calc(100vh-4rem)] max-w-lg items-center justify-center px-6 text-sm text-text-muted">
+      불러오는 중…
+    </div>
+  );
+}
+
+function SignupPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialRole = (searchParams.get("role") ?? "buyer") as (typeof ROLES)[number]["key"];
