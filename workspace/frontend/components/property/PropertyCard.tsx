@@ -18,6 +18,7 @@ export function PropertyCard({ p }: { p: PropertyListItem }) {
             alt={p.title}
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
+            unoptimized
             className="object-cover transition group-hover:scale-105"
           />
         ) : (
