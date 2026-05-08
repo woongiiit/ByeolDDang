@@ -117,103 +117,101 @@ export function SearchBar({
       </form>
 
       {isFilterOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40 px-4 py-10">
-          <div className="mx-auto w-full max-w-2xl rounded-card bg-surface p-6 shadow-xl">
-            <div className="mb-5 flex items-center justify-between">
-              <h3 className="text-lg font-semibold">검색 조건</h3>
-              <button
-                type="button"
-                className="text-sm text-text-muted hover:text-text"
-                onClick={() => setIsFilterOpen(false)}
-              >
-                닫기
-              </button>
-            </div>
+        <div className="card mt-3 p-5">
+          <div className="mb-5 flex items-center justify-between">
+            <h3 className="text-base font-semibold">검색 조건</h3>
+            <button
+              type="button"
+              className="text-sm text-text-muted hover:text-text"
+              onClick={() => setIsFilterOpen(false)}
+            >
+              접기
+            </button>
+          </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
-              <label className="space-y-1 text-sm">
-                <span className="text-text-muted">최소 가격 (원)</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={draft.priceMin ?? ""}
-                  onChange={(e) => updateNumberField("priceMin", e.target.value)}
-                  className="h-10 w-full rounded-md border border-border bg-bg px-3"
-                />
-              </label>
-              <label className="space-y-1 text-sm">
-                <span className="text-text-muted">최대 가격 (원)</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={draft.priceMax ?? ""}
-                  onChange={(e) => updateNumberField("priceMax", e.target.value)}
-                  className="h-10 w-full rounded-md border border-border bg-bg px-3"
-                />
-              </label>
-
-              <label className="space-y-1 text-sm">
-                <span className="text-text-muted">최소 면적 (m²)</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={draft.areaMin ?? ""}
-                  onChange={(e) => updateNumberField("areaMin", e.target.value)}
-                  className="h-10 w-full rounded-md border border-border bg-bg px-3"
-                />
-              </label>
-              <label className="space-y-1 text-sm">
-                <span className="text-text-muted">최대 면적 (m²)</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={draft.areaMax ?? ""}
-                  onChange={(e) => updateNumberField("areaMax", e.target.value)}
-                  className="h-10 w-full rounded-md border border-border bg-bg px-3"
-                />
-              </label>
-
-              <label className="space-y-1 text-sm">
-                <span className="text-text-muted">최소 방 개수</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={draft.roomsMin ?? ""}
-                  onChange={(e) => updateNumberField("roomsMin", e.target.value)}
-                  className="h-10 w-full rounded-md border border-border bg-bg px-3"
-                />
-              </label>
-              <label className="space-y-1 text-sm">
-                <span className="text-text-muted">최소 욕실 개수</span>
-                <input
-                  type="number"
-                  min={0}
-                  value={draft.bathroomsMin ?? ""}
-                  onChange={(e) => updateNumberField("bathroomsMin", e.target.value)}
-                  className="h-10 w-full rounded-md border border-border bg-bg px-3"
-                />
-              </label>
-            </div>
-
-            <label className="mt-4 flex items-center gap-2 text-sm">
+          <div className="grid gap-4 md:grid-cols-2">
+            <label className="space-y-1 text-sm">
+              <span className="text-text-muted">최소 가격 (원)</span>
               <input
-                type="checkbox"
-                checked={draft.premiumOnly}
-                onChange={(e) =>
-                  setDraft((prev) => ({ ...prev, premiumOnly: e.target.checked }))
-                }
+                type="number"
+                min={0}
+                value={draft.priceMin ?? ""}
+                onChange={(e) => updateNumberField("priceMin", e.target.value)}
+                className="h-10 w-full rounded-md border border-border bg-bg px-3"
               />
-              프리미엄 감정 매물만 보기
+            </label>
+            <label className="space-y-1 text-sm">
+              <span className="text-text-muted">최대 가격 (원)</span>
+              <input
+                type="number"
+                min={0}
+                value={draft.priceMax ?? ""}
+                onChange={(e) => updateNumberField("priceMax", e.target.value)}
+                className="h-10 w-full rounded-md border border-border bg-bg px-3"
+              />
             </label>
 
-            <div className="mt-6 flex justify-end gap-2">
-              <Button type="button" variant="secondary" onClick={resetFilters}>
-                초기화
-              </Button>
-              <Button type="button" onClick={applyFilters}>
-                적용하기
-              </Button>
-            </div>
+            <label className="space-y-1 text-sm">
+              <span className="text-text-muted">최소 면적 (m²)</span>
+              <input
+                type="number"
+                min={0}
+                value={draft.areaMin ?? ""}
+                onChange={(e) => updateNumberField("areaMin", e.target.value)}
+                className="h-10 w-full rounded-md border border-border bg-bg px-3"
+              />
+            </label>
+            <label className="space-y-1 text-sm">
+              <span className="text-text-muted">최대 면적 (m²)</span>
+              <input
+                type="number"
+                min={0}
+                value={draft.areaMax ?? ""}
+                onChange={(e) => updateNumberField("areaMax", e.target.value)}
+                className="h-10 w-full rounded-md border border-border bg-bg px-3"
+              />
+            </label>
+
+            <label className="space-y-1 text-sm">
+              <span className="text-text-muted">최소 방 개수</span>
+              <input
+                type="number"
+                min={0}
+                value={draft.roomsMin ?? ""}
+                onChange={(e) => updateNumberField("roomsMin", e.target.value)}
+                className="h-10 w-full rounded-md border border-border bg-bg px-3"
+              />
+            </label>
+            <label className="space-y-1 text-sm">
+              <span className="text-text-muted">최소 욕실 개수</span>
+              <input
+                type="number"
+                min={0}
+                value={draft.bathroomsMin ?? ""}
+                onChange={(e) => updateNumberField("bathroomsMin", e.target.value)}
+                className="h-10 w-full rounded-md border border-border bg-bg px-3"
+              />
+            </label>
+          </div>
+
+          <label className="mt-4 flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={draft.premiumOnly}
+              onChange={(e) =>
+                setDraft((prev) => ({ ...prev, premiumOnly: e.target.checked }))
+              }
+            />
+            프리미엄 감정 매물만 보기
+          </label>
+
+          <div className="mt-6 flex justify-end gap-2">
+            <Button type="button" variant="secondary" onClick={resetFilters}>
+              초기화
+            </Button>
+            <Button type="button" onClick={applyFilters}>
+              적용하기
+            </Button>
           </div>
         </div>
       )}
